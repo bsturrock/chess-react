@@ -1,7 +1,7 @@
 import './Square.css'
-import { pawnMoves } from '../../../scripts/pieceMoves'
+import { bishopMoves, knightMoves, pawnMoves, rookMoves } from '../../../scripts/pieceMoves'
 
-const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, availableMoves, setAvailableMoves, activeSquare}) => {
+const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, availableMoves, setAvailableMoves, activeSquare, movePiece, clearBoardStatus}) => {
     
     let {color, piece, occupied} = pieceInfo
 
@@ -27,15 +27,44 @@ const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, ava
         return false
     }
 
+    const checkIfAttack = () => {
+        if(checkIfMove() && color=='black'){
+            return true
+        }
+        return false
+    }
+
+    const checkIfActive = () => {
+        return activeSquare.column==column && activeSquare.row==row
+    }
+
+    const pawnHasAlreadyMoved = () => {
+        if(piece=='p' && color=='white' && row==1){return false}
+        return true
+    }
+
     let hoverable = color == 'white' ? 'hoverable' : ''
-    let isAMove = checkIfMove() ? 'move' : ''
-    let isActive = activeSquare.column==column && activeSquare.row==row ? 'active' : ''
+    let isAMove = checkIfMove() ? (checkIfAttack() ? 'attack' : 'move') : ''
+    let isActive = checkIfActive() ? 'active' : ''
 
     const handleClick = () => {
-        if(color=='white'){
-            updateActiveSquare(column, row)
-            setAvailableMoves(pawnMoves(pieceLocations, {column,row}, false))
-            console.log(availableMoves)
+        if(color=='white' && !checkIfActive()){
+            updateActiveSquare(pieceLocations[row][column])
+            if(piece == 'p'){
+                setAvailableMoves(pawnMoves(pieceLocations, {column,row}, pawnHasAlreadyMoved()))
+            } else if(piece == 'n'){
+                setAvailableMoves(knightMoves(pieceLocations, {column,row}))
+            } else if(piece == 'b'){
+                setAvailableMoves(bishopMoves(pieceLocations,{column, row}))
+            } else if(piece == 'r'){
+                setAvailableMoves(rookMoves(pieceLocations,{column, row}))
+            } else if(piece == 'q'){
+                setAvailableMoves([...bishopMoves(pieceLocations,{column, row}), ...rookMoves(pieceLocations,{column, row})])
+            }
+        } else if (checkIfMove()){
+            movePiece(pieceLocations[row][column])
+        } else if(checkIfActive()){
+            clearBoardStatus()
         }
     }
     

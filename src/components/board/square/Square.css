@@ -6,6 +6,7 @@
     height: 100px;
     display: block;
     position: relative;
+    z-index: 995;
 }
 
 .dark {
@@ -147,6 +148,8 @@
     top: 0;
     background-image: url('src/assets/black_rook.png');
     background-size: cover;
+    z-index: 997;
+
 }
 
 .hoverable.dark:hover {
@@ -168,21 +171,47 @@
     background: rgb(23, 194, 23) !important;
 }
 
-.move.dark:hover{
-    /* background: rgb(172, 85, 31); */
+.move:hover{
     cursor: pointer;
 }
 
-.move.light:hover{
-    /* background: rgb(245, 242, 235); */
-    cursor: pointer;
-}
 
 .move::after {
     content: '';
     display: block;
     border-radius: 50%;
     background-color: green   ;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 37.5%;
+    top: 37.5%;
+    z-index: 998;
+}
+
+.attack::before{
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background-color: rgb(187, 0, 0)   ;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 37.5%;
+    top: 37.5%;
+    z-index: 998;
+}
+
+.attack:hover{
+    cursor: pointer;
+}
+
+.attack:hover::before{
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background-color: rgb(255, 30, 30)   ;
+    cursor: pointer;
     position: absolute;
     width: 25px;
     height: 25px;
@@ -203,3 +232,4 @@
     top: 37.5%;
     z-index: 999;
 }
+
