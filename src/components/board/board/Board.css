@@ -1,0 +1,8 @@
+.board {
+    display: flex;
+    min-width: 832px;
+    max-width: 832px;
+    min-height: 832px;
+    max-height: 832px;
+    flex-direction: row;
+}

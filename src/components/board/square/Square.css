@@ -1,0 +1,205 @@
+
+.square-container {
+    min-width: 100px;
+    width: 100px;
+    min-height: 100px;
+    height: 100px;
+    display: block;
+    position: relative;
+}
+
+.dark {
+    background: rgb(128, 60, 18);
+}
+
+.light {
+    background: rgb(242, 231, 196);
+}
+
+.white.p::after {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/white_pawn.png');
+    background-size: cover;
+}
+
+.white.n::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/white_knight.png');
+    background-size: cover;
+}
+
+.white.q::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/white_queen.png');
+    background-size: cover;
+}
+
+.white.k::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/white_king.png');
+    background-size: cover;
+}
+
+.white.r::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/white_rook.png');
+    background-size: cover;
+}
+
+.white.b::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/white_bishop.png');
+    background-size: cover;
+}
+
+.black.p::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/black_pawn.png');
+    background-size: cover;
+}
+
+.black.n::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/black_knight.png');
+    background-size: cover;
+}
+
+.black.b::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/black_bishop.png');
+    background-size: cover;
+}
+
+.black.q::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/black_queen.png');
+    background-size: cover;
+}
+
+.black.k::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/black_king.png');
+    background-size: cover;
+}
+
+.black.r::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -2px;
+    top: 0;
+    background-image: url('src/assets/black_rook.png');
+    background-size: cover;
+}
+
+.hoverable.dark:hover {
+    background: rgb(172, 85, 31);
+    cursor: pointer;
+}
+
+.hoverable.light:hover {
+    background: rgb(245, 242, 235);
+    cursor: pointer;
+}
+
+.active {
+    background: green;
+}
+
+.active:hover{
+    cursor: pointer;
+    background: rgb(23, 194, 23) !important;
+}
+
+.move.dark:hover{
+    /* background: rgb(172, 85, 31); */
+    cursor: pointer;
+}
+
+.move.light:hover{
+    /* background: rgb(245, 242, 235); */
+    cursor: pointer;
+}
+
+.move::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background-color: green   ;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 37.5%;
+    top: 37.5%;
+    z-index: 998;
+}
+
+.move:hover::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background-color: rgb(23, 194, 23);
+    position: absolute;
+    width: 25;
+    height: 25;
+    left: 37.5%;
+    top: 37.5%;
+    z-index: 999;
+}
