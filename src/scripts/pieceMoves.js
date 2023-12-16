@@ -1,9 +1,10 @@
 
 
-const getSquare = (pieceLocations, row, column, x, y) => {
+export const getSquare = (pieceLocations, row, column, x, y) => {
+    let adjustedRow = row + x
+    let adjustedCol = column + y
     try {
-        let newSquare = pieceLocations[row+x][column+y]
-        if(newSquare.occupied==true && newSquare.color=='white')return false
+        let newSquare = pieceLocations[adjustedRow][adjustedCol]
         return newSquare
     } catch (e) {
         return false
@@ -14,20 +15,16 @@ const getSquare = (pieceLocations, row, column, x, y) => {
 export const pawnMoves = (pieceLocations, activeSquare, hasMoved) => {
     const possibleMoves = []
     let {column, row} = activeSquare
-    console.log(column, row)
     if(!hasMoved){
         let oneSquareUp = getSquare(pieceLocations, row, column, 1, 0)
         let twoSquareUp = getSquare(pieceLocations, row, column, 2, 0)
-        console.log('onesquareup:', oneSquareUp)
-        console.log('twosquareup:', twoSquareUp)
         if(!oneSquareUp.occupied){possibleMoves.push({column:oneSquareUp.column,row:oneSquareUp.row})}
         if(!twoSquareUp.occupied){possibleMoves.push({column:twoSquareUp.column,row:twoSquareUp.row})}
     } else if(hasMoved){
         let oneSquareUp = pieceLocations[row+1][column]
         if(!oneSquareUp.occupied){possibleMoves.push({column:oneSquareUp.column,row:oneSquareUp.row})}
     }
-    console.log('possible moves: ', possibleMoves)
-    return possibleMoves
+    return possibleMoves.filter((ele)=>ele.piece!='k').filter((ele) => ele.color!='white')
 }
 
 export const knightMoves = (pieceLocations, activeSquare) => {
@@ -43,7 +40,7 @@ export const knightMoves = (pieceLocations, activeSquare) => {
         getSquare(pieceLocations, row, column,-2,-1)
     ]
 
-    let possibleMoves = tryMoves.filter((ele)=> ele ? true : false)
+    let possibleMoves = tryMoves.filter((ele)=> ele ? true : false).filter((ele)=>ele.piece!='k').filter((ele) => ele.color!='white')
 
     return possibleMoves
 
@@ -55,7 +52,7 @@ export const rookMoves = (pieceLocations, activeSquare) => {
     const potentialMoves = []
     while (startRow < 8){
         let sq = getSquare(pieceLocations, startRow, startColumn, 1, 0)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -70,7 +67,7 @@ export const rookMoves = (pieceLocations, activeSquare) => {
     startRow = activeSquare.row
     while (startColumn < 8){
         let sq = getSquare(pieceLocations, startRow, startColumn, 0, 1)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -85,7 +82,7 @@ export const rookMoves = (pieceLocations, activeSquare) => {
     startRow = activeSquare.row
     while (startColumn > -1){
         let sq = getSquare(pieceLocations, startRow, startColumn, 0, -1)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -99,7 +96,7 @@ export const rookMoves = (pieceLocations, activeSquare) => {
     startRow = activeSquare.row
     while (startRow > -1){
         let sq = getSquare(pieceLocations, startRow, startColumn, -1, 0)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -109,7 +106,7 @@ export const rookMoves = (pieceLocations, activeSquare) => {
         }
         startRow--
     }
-    return potentialMoves.filter((ele)=>ele)
+    return potentialMoves.filter((ele)=>ele).filter((ele)=>ele.piece!='k')
 
 }
 
@@ -118,11 +115,10 @@ export const bishopMoves = (pieceLocations, activeSquare) => {
     let startRow = activeSquare.row
 
     const potentialMoves = []
-    
 
     while(startColumn > -1 && startRow < 8){
         let sq = getSquare(pieceLocations,startRow,startColumn,1,-1)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -139,7 +135,7 @@ export const bishopMoves = (pieceLocations, activeSquare) => {
 
     while(startColumn < 8 && startRow < 8){
         let sq = getSquare(pieceLocations,startRow,startColumn,1,1)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -156,7 +152,7 @@ export const bishopMoves = (pieceLocations, activeSquare) => {
 
     while(startColumn < 8 && startRow > -1){
         let sq = getSquare(pieceLocations,startRow,startColumn,-1,1)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -173,7 +169,7 @@ export const bishopMoves = (pieceLocations, activeSquare) => {
 
     while(startColumn > -1 && startRow > -1){
         let sq = getSquare(pieceLocations,startRow,startColumn,-1,-1)
-        if(sq.color=='white' || !sq){
+        if(!sq || sq.color=='white'){
             break;
         } else if(sq.color=='black'){
             potentialMoves.push(sq)
@@ -184,6 +180,31 @@ export const bishopMoves = (pieceLocations, activeSquare) => {
         startColumn--
         startRow--
     }
-    console.log(potentialMoves)
-    return potentialMoves.filter((ele)=>ele)
+    return potentialMoves.filter((ele)=>ele).filter((ele)=>ele.piece!='k')
+}
+
+
+export const kingMoves = (pieceLocations, activeSquare, canCastleKing, canCastleQueen) => {
+    let {column, row} = activeSquare
+    let tryMoves = [
+        getSquare(pieceLocations, row, column,-1,1),
+        getSquare(pieceLocations, row, column,1,1),
+        getSquare(pieceLocations, row, column,1,-1),
+        getSquare(pieceLocations, row, column,-1,-1),
+        getSquare(pieceLocations, row, column,-1,0),
+        getSquare(pieceLocations, row, column,0,1,),
+        getSquare(pieceLocations, row, column,0,-1),
+        getSquare(pieceLocations, row, column,1,0)
+    ]
+    if(canCastleKing){
+        tryMoves.push(getSquare(pieceLocations, 0,6,0,0))
+    }
+    if(canCastleQueen){
+        tryMoves.push(getSquare(pieceLocations, 0,2,0,0))
+    }
+ 
+    let possibleMoves = tryMoves.filter((ele)=> ele ? true : false).filter((ele)=>ele.piece!='k').filter((ele)=>ele.color!='white')
+    return possibleMoves
+ 
+
 }

@@ -1,9 +1,9 @@
 import './Square.css'
-import { bishopMoves, knightMoves, pawnMoves, rookMoves } from '../../../scripts/pieceMoves'
+import { pawnMoves, knightMoves, bishopMoves, rookMoves, kingMoves, getSquare } from '../../../scripts/pieceMoves'
 
-const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, availableMoves, setAvailableMoves, activeSquare, movePiece, clearBoardStatus}) => {
+const Square = ({pieceInfo, pieceLocations, updateActiveSquare, availableMoves, setAvailableMoves, activeSquare, movePiece, clearBoardStatus}) => {
     
-    let {color, piece, occupied} = pieceInfo
+    let {color, piece, occupied, target, column, row} = pieceInfo
 
     const getColor = () => {
         switch(true){
@@ -38,8 +38,26 @@ const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, ava
         return activeSquare.column==column && activeSquare.row==row
     }
 
-    const pawnHasAlreadyMoved = () => {
+    const hasAlreadyMoved = () => {
         if(piece=='p' && color=='white' && row==1){return false}
+        if(piece=='k' && color=='white' && row==0 && column==4){return false}
+        return true
+    }
+
+    const canCastleKing = () => {
+        if(piece!='k' || color!='white' || hasAlreadyMoved()) return false;
+        if(getSquare(pieceLocations,0,5,0,0).occupied){console.log('0,5 is occupied'); return false}
+        if(getSquare(pieceLocations,0,6,0,0).occupied){console.log('0,6 is occupied'); return false}
+        if(getSquare(pieceLocations,7,0,0,0).piece!='r' && getSquare(pieceLocations,7,0,0,0).color!='white'){console.log('rook is not there'); return false}
+        return true
+    }
+
+    const canCastleQueen = () => {
+        if(piece!='k' || color!='white' || hasAlreadyMoved()) return false;
+        if(getSquare(pieceLocations,0,1,0,0).occupied) return false;
+        if(getSquare(pieceLocations,0,2,0,0).occupied) return false;
+        if(getSquare(pieceLocations,0,3,0,0).occupied) return false;
+        if(getSquare(pieceLocations,0,0,0,0).piece!='r' && getSquare(pieceLocations,0,0,0,0).color!='white') return false;
         return true
     }
 
@@ -51,7 +69,7 @@ const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, ava
         if(color=='white' && !checkIfActive()){
             updateActiveSquare(pieceLocations[row][column])
             if(piece == 'p'){
-                setAvailableMoves(pawnMoves(pieceLocations, {column,row}, pawnHasAlreadyMoved()))
+                setAvailableMoves(pawnMoves(pieceLocations, {column,row}, hasAlreadyMoved()))
             } else if(piece == 'n'){
                 setAvailableMoves(knightMoves(pieceLocations, {column,row}))
             } else if(piece == 'b'){
@@ -60,6 +78,8 @@ const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, ava
                 setAvailableMoves(rookMoves(pieceLocations,{column, row}))
             } else if(piece == 'q'){
                 setAvailableMoves([...bishopMoves(pieceLocations,{column, row}), ...rookMoves(pieceLocations,{column, row})])
+            } else if(piece == 'k'){
+                setAvailableMoves(kingMoves(pieceLocations, {column, row}, canCastleKing(), canCastleQueen()))
             }
         } else if (checkIfMove()){
             movePiece(pieceLocations[row][column])
@@ -70,7 +90,7 @@ const Square = ({column, row, pieceInfo, pieceLocations, updateActiveSquare, ava
     
     return (
         <>
-        <div onClick={handleClick} id={`${column}-${row}`} className={`square-container ${isAMove} ${isActive} ${hoverable} ${color} ${piece} ${getColor()}`}>
+        <div onClick={handleClick} id={`${column}-${row}`} className={`square-container ${isAMove} ${isActive} ${target} ${hoverable} ${color} ${piece} ${getColor()}`}>
         </div>
         </>
     )

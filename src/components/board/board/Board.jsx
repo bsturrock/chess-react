@@ -85,7 +85,7 @@ const Board = () => {
             {occupied: true, color:'white', piece: 'k', column: 4, row: 0},
             {occupied: true, color:'white', piece: 'b', column: 5, row: 0},
             {occupied: true, color:'white', piece: 'n', column: 6, row: 0},
-            {occupied: true, color:'white', piece: 'r', column: 7, row: 0}
+            {occupied: true, color:'white', piece: 'r', column: 7, row: 0},
         ],
     })
 
@@ -120,6 +120,23 @@ const Board = () => {
         console.log(newSquare)
         console.log(activeSquare)
         const pieceLocationsCopy = {...pieceLocations}
+
+        if(activeSquare.piece == 'k' && newSquare.row == 0 && newSquare.column == 6){
+            pieceLocationsCopy[0][7].piece = ''
+            pieceLocationsCopy[0][7].color = ''
+            pieceLocationsCopy[0][7].occupied = false
+            pieceLocationsCopy[0][5].piece = 'r'
+            pieceLocationsCopy[0][5].color = 'white'
+            pieceLocationsCopy[0][5].occupied = true
+        } else if (activeSquare.piece == 'k' && newSquare.row == 0 && newSquare.column == 2){
+            pieceLocationsCopy[0][0].piece = ''
+            pieceLocationsCopy[0][0].color = ''
+            pieceLocationsCopy[0][0].occupied = false
+            pieceLocationsCopy[0][3].piece = 'r'
+            pieceLocationsCopy[0][3].color = 'white'
+            pieceLocationsCopy[0][3].occupied = true
+        }
+
         pieceLocationsCopy[newSquare.row][newSquare.column].piece = activeSquare.piece
         pieceLocationsCopy[newSquare.row][newSquare.column].color = activeSquare.color
         pieceLocationsCopy[newSquare.row][newSquare.column].occupied = true
